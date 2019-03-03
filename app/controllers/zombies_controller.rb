@@ -9,8 +9,18 @@ class ZombiesController < ApplicationController
     end
   end
 
+  def update
+    @zombie = Zombie.find(params[:id])
+    
+    if @zombie.update!(zombie_params)
+      render json: @zombie, include: [:armors], status: :ok
+    else
+      render json: @zombie.errors, status: :unprocessable_entity
+    end
+  end
+
   private
   def zombie_params
-    params.permit(:name)
+    params.permit(:name, :id, :armors_attributes => [:name, :zombie_id])
   end
 end

@@ -28,5 +28,24 @@ RSpec.describe ZombiesController, type: :controller do
 			end
 		end
 	end
+
+	describe 'assign an armor for the zombie' do
+		let(:zombie) { Zombie.create(name: 'brainless') } 
+		let(:armor) { { name: 'Partisan'} } 
+
+		before do 
+			@zombie = zombie
+			put :update, params: { id: @zombie.id, armors_attributes: [armor] }
+		end
+
+		it 'has an armor' do
+			puts response.body
+			expect(@zombie.armors.count).to eq 1
+		end
+
+		it 'returns status updated' do 
+			expect(response).to have_http_status(:ok)
+		end
+	end
 end
 
