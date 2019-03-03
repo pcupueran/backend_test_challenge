@@ -39,7 +39,6 @@ RSpec.describe ZombiesController, type: :controller do
 		end
 
 		it 'has an armor' do
-			puts response.body
 			expect(@zombie.armors.count).to eq 1
 		end
 
