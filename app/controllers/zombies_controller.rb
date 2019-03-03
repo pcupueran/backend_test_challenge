@@ -11,7 +11,7 @@ class ZombiesController < ApplicationController
 
   def update
     @zombie = Zombie.find(params[:id])
-    
+
     if @zombie.update!(zombie_params)
       render json: @zombie, include: [:armors], status: :ok
     else
@@ -21,6 +21,6 @@ class ZombiesController < ApplicationController
 
   private
   def zombie_params
-    params.permit(:name, :id, :armors_attributes => [:name, :zombie_id])
+    params.permit(:name, :id, :armors_attributes => [:name, :zombie_id], :weapons_attributes => [:name, :zombie_id])
   end
 end

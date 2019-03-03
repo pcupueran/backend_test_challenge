@@ -46,5 +46,28 @@ RSpec.describe ZombiesController, type: :controller do
 			expect(response).to have_http_status(:ok)
 		end
 	end
+
+	describe 'provide a zombie with a weapon' do
+		let(:zombie) { Zombie.create(name: 'brainless') } 
+		let(:weapon) { { name: 'Partisan' } }
+
+		before do 
+			@zombie = zombie 
+			put :update, params: { id: @zombie.id, weapons_attributes: [weapon] }
+		end
+
+		it 'zombie has a weapon' do
+			expect(@zombie.weapons.count).to eq 1
+			expect(@zombie.weapons.first.name).to eq 'Partisan'
+		end
+
+		it 'returns status ok' do
+			expect(response).to have_http_status(:ok)
+		end
+
+		it 'returns JSON object' do 
+			expect(response.content_type).to eq 'application/json'
+		end
+	end
 end
 

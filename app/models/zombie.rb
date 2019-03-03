@@ -1,5 +1,6 @@
 class Zombie < ApplicationRecord
   has_many :armors
-  accepts_nested_attributes_for :armors
+  has_many :weapons
+  accepts_nested_attributes_for :armors, :weapons
   validates :name, presence: true
 end
