@@ -20,12 +20,7 @@ class ZombiesController < ApplicationController
   end
 
   def search
-    @zombies = Zombie.joins(:armors, :weapons).group('zombies.id').where('zombies.name LIKE :search_term
-      OR armors.name LIKE :search_term 
-      OR weapons.name LIKE :search_term', 
-      search_term: "%#{params[:term]}%"
-    )
-
+    @zombies = Zombie.associated_with(params[:term])
     render json: @zombies, only: [:id, :name], include: { armors: { only: :name }, weapons: { only: :name } }, status: :ok
   end
 
