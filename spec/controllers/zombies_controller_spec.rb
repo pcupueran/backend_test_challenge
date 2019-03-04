@@ -29,7 +29,7 @@ RSpec.describe ZombiesController, type: :controller do
 		end
 	end
 
-	describe 'assign an armor for the zombie' do
+	describe 'UPDATE assign an armor for the zombie' do
 		let(:zombie) { Zombie.create(name: 'brainless') } 
 		let(:armor) { { name: 'Partisan'} } 
 
@@ -47,7 +47,7 @@ RSpec.describe ZombiesController, type: :controller do
 		end
 	end
 
-	describe 'provide a zombie with a weapon' do
+	describe 'UPDATE provide a zombie with a weapon' do
 		let(:zombie) { Zombie.create(name: 'brainless') } 
 		let(:weapon) { { name: 'Partisan' } }
 
@@ -57,8 +57,9 @@ RSpec.describe ZombiesController, type: :controller do
 		end
 
 		it 'zombie has a weapon' do
-			expect(@zombie.weapons.count).to eq 1
-			expect(@zombie.weapons.first.name).to eq 'Partisan'
+			updated = JSON.parse(response.body)
+			expect(updated['weapons'].length).to eq 1
+			expect(updated['weapons'].map { |weapon| weapon['name'] }).to include 'Partisan'
 		end
 
 		it 'returns status ok' do

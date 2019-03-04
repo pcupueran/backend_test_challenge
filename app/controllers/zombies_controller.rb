@@ -11,7 +11,7 @@ class ZombiesController < ApplicationController
 
   def update
     if @zombie.update(zombie_params)
-      render json: @zombie, include: [:armors], status: :ok
+      render json: @zombie, include: [:armors, :weapons], status: :ok
     else
       render json: @zombie.errors, status: :unprocessable_entity
     end
@@ -32,7 +32,7 @@ class ZombiesController < ApplicationController
 
   private
   def zombie_params
-    params.permit(:name, :id, :armors_attributes => [:name, :zombie_id], :weapons_attributes => [:name, :zombie_id])
+    params.permit(:name, :id, armors_attributes: [:name, :zombie_id], weapons_attributes: [:name, :zombie_id])
   end
 
   def zombie
