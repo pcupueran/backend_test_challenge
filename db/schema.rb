@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190303163109) do
+ActiveRecord::Schema.define(version: 20190304215420) do
 
   create_table "armors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "name"
@@ -34,24 +34,6 @@ ActiveRecord::Schema.define(version: 20190303163109) do
     t.index ["zombie_id"], name: "index_weapons_on_zombie_id"
   end
 
-  create_table "zombie_armors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
-    t.bigint "zombie_id"
-    t.bigint "armor_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["armor_id"], name: "index_zombie_armors_on_armor_id"
-    t.index ["zombie_id"], name: "index_zombie_armors_on_zombie_id"
-  end
-
-  create_table "zombie_weapons", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
-    t.bigint "zombie_id"
-    t.bigint "weapon_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["weapon_id"], name: "index_zombie_weapons_on_weapon_id"
-    t.index ["zombie_id"], name: "index_zombie_weapons_on_zombie_id"
-  end
-
   create_table "zombies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "name"
     t.integer "hit_points"
@@ -62,8 +44,4 @@ ActiveRecord::Schema.define(version: 20190303163109) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "zombie_armors", "armors"
-  add_foreign_key "zombie_armors", "zombies"
-  add_foreign_key "zombie_weapons", "weapons"
-  add_foreign_key "zombie_weapons", "zombies"
 end
