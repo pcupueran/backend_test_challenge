@@ -1,7 +1,7 @@
 class ZombiesController < ApplicationController
-  def create
-    @zombie = Zombie.new(zombie_params)
+  before_action :zombie, only: [:create, :update, :destroy]
 
+  def create
     if @zombie.save
       render json: @zombie, status: :created
     else
@@ -10,9 +10,7 @@ class ZombiesController < ApplicationController
   end
 
   def update
-    @zombie = Zombie.find(params[:id])
-
-    if @zombie.update!(zombie_params)
+    if @zombie.update(zombie_params)
       render json: @zombie, include: [:armors], status: :ok
     else
       render json: @zombie.errors, status: :unprocessable_entity
@@ -25,9 +23,7 @@ class ZombiesController < ApplicationController
   end
 
   def destroy
-    zombie = Zombie.find(params[:id])
-
-    if zombie.destroy
+    if @zombie.destroy
       render status: :ok
     else
       render status: :forbidden
@@ -37,5 +33,9 @@ class ZombiesController < ApplicationController
   private
   def zombie_params
     params.permit(:name, :id, :armors_attributes => [:name, :zombie_id], :weapons_attributes => [:name, :zombie_id])
+  end
+
+  def zombie
+    @zombie = params[:id] ? Zombie.find(params[:id]) : Zombie.new(zombie_params)
   end
 end  
