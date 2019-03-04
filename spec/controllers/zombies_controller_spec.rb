@@ -69,5 +69,92 @@ RSpec.describe ZombiesController, type: :controller do
 			expect(response.content_type).to eq 'application/json'
 		end
 	end
+
+	describe 'search for a zombie' do 
+		let(:freddy) do
+			Zombie.create(
+				name: 'freddy', 
+				armors_attributes: [
+					{ name: 'Hauberk' },
+					{ name: 'Kabuto' }
+				],
+				weapons_attributes: [
+					{ name: 'Partisan' },
+					{ name: 'WarHammer' }
+				])
+		end		
+
+		let(:hannah) do
+			Zombie.create(
+				name: 'hannah', 
+				armors_attributes: [
+					{ name: 'Mengu' },
+					{ name: 'Bevor' }
+				], 
+				weapons_attributes: [
+					{ name: 'Bow' },
+					{ name: 'Hammer' }
+				])
+		end
+
+		before do 
+			@zombies = [hannah, freddy]
+		end
+
+		context 'searching by zombie name' do
+			before { get :search, params: { term: 'hannah'} }
+			
+			it "finds hannah the zombie" do 
+				results = JSON.parse(response.body)
+				expect(results.length).to eq 1
+				expect(results.first['name']).to eq 'hannah'
+			end
+		end
+		
+		context 'searching by zombie armor' do
+			before do 
+				get :search, params: { term: 'Bevor'} 
+				@results = JSON.parse(response.body)
+			end
+			
+			it "finds hannah by armor" do 
+				expect(@results.length).to eq 1
+				expect(@results.first['name']).to eq 'hannah'
+			end
+
+			it "retrieves zombie that has the armor Bevor" do 
+				expect(@results.first['armors'].map { |armor| armor['name'] }).to include 'Bevor'
+			end
+		end
+
+		context 'searching by zombie weapon' do
+			context "only one weapon with that name" do
+				before do 
+					get :search, params: { term: 'Partisan' }
+					@results = JSON.parse(response.body)
+				end
+				
+				it "finds freddy by weapon" do 
+					expect(@results.length).to eq 1
+					expect(@results.first['name']).to eq 'freddy'
+				end
+
+				it "retrieves zombie that has the weapon Partisan" do 
+					expect(@results.first['weapons'].map { |weapon| weapon['name'] }).to include 'Partisan'
+				end
+			end
+
+			context 'more than one weapon with similar name' do
+				before do 
+					get :search, params: { term: 'hammer'} 
+					@results = JSON.parse(response.body)
+				end
+
+				it "finds two @results freddy and hannah" do
+					expect(@results.length).to eq 2
+				end
+			end
+		end
+	end
 end
 
