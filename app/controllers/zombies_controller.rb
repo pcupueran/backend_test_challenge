@@ -24,6 +24,16 @@ class ZombiesController < ApplicationController
     render json: @zombies, only: [:id, :name], include: { armors: { only: :name }, weapons: { only: :name } }, status: :ok
   end
 
+  def destroy
+    zombie = Zombie.find(params[:id])
+
+    if zombie.destroy
+      render status: :ok
+    else
+      render status: :forbidden
+    end
+  end
+
   private
   def zombie_params
     params.permit(:name, :id, :armors_attributes => [:name, :zombie_id], :weapons_attributes => [:name, :zombie_id])

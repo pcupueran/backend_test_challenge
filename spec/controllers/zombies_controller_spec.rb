@@ -156,5 +156,14 @@ RSpec.describe ZombiesController, type: :controller do
 			end
 		end
 	end
+
+	describe 'delete a zombie' do
+		let(:zombie) { Zombie.create(name: 'brainless') } 
+		before { zombie }
+
+		it "deletes zombie" do 
+			expect { delete :destroy, params: { id: zombie.id } }.to change(Zombie, :count).by(-1)
+		end
+	end
 end
 
