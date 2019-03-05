@@ -1,6 +1,11 @@
 class ZombiesController < ApplicationController
   before_action :zombie, only: [:create, :update, :destroy]
 
+  def index
+    @zombies = Zombie.all
+    render json: @zombies, status: :ok
+  end
+
   def create
     if @zombie.save
       render json: @zombie, status: :created
