@@ -1,6 +1,12 @@
 # Badi Coding Challenge - Backend (Ruby on Rails)
 ![Zombies at Badi](https://user-images.githubusercontent.com/4199523/33260366-e54216aa-d35f-11e7-8442-8d9e1cd67d88.jpg)
 
+## Test the API using cURL
+* To create a zombie: curl --data 'name=brainless' https://zombies-api.herokuapp.com/zombies
+* To update the zombie armors: curl -H 'Content-Type: application/json' -X PUT -d '{"armors_attributes": [{ "name": "New armor"}]}' https://zombies-api.herokuapp.com/zombies/:id
+* To update the zombie weapons: curl -H 'Content-Type: application/json' -X PUT -d '{"weapons_attributes": [{ "name": "New weapon"}]}' https://zombies-api.herokuapp.com/zombies/:id
+* To delete a zombie record: curl -X "DELETE" https://zombies-api.herokuapp.com/zombies/:id
+
 ## The context
 You are a scientist in a post-apocalyptic world. In your lab you have plenty of human tissues, yet not so many brains. For this reason, you decide to create zombies, which you then equip with armors and weapons. Why would you do that? Well, we cannot tell you. The only thing you need to know is that you are a crazy scientist playing on the edge of life and death.
 
