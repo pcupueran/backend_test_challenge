@@ -3,7 +3,7 @@ class ZombiesController < ApplicationController
 
   def index
     @zombies = Zombie.all
-    render json: @zombies, include: [:armors, :weapons], status: :ok
+    render json: @zombies, only: [:id, :name], include: { armors: { only: :name }, weapons: { only: :name } }, status: :ok
   end
 
   def create
